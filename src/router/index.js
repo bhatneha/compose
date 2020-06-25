@@ -6,7 +6,6 @@ import contact from '@/components/contact'
 import welcome from '@/components/welcome'
 import compose from '@/components/compose'
 import createcomp from '@/components/createcomp'
-// import test from '@/components/test'
 import kvstore from '@/components/kvstore'
 
 Vue.use(VueRouter)
@@ -44,9 +43,9 @@ Vue.use(VueRouter)
   },
   {
     path: '/kvstore',
-    name: 'KVstore',
+    name: 'KVStore',
     component: kvstore
-  }
+  },
 ]
 
 const router = new VueRouter({

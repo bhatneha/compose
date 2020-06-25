@@ -1,72 +1,39 @@
 <template>
-  <div id="app">
-    <Navigation></Navigation>
-    <div id="body">
-      <router-view></router-view>
-    </div>
-  </div>
+   <div id="app" class="main-container">
+      <Navigation/>
+      <div id="body" class="container">
+         <router-view/>
+      </div>
+      <Footer/>
+   </div>
 </template>
-
 <script>
-import navigation from './components/navigation'
-export default {
-  name: 'app',
-  components: {
-    'Navigation': navigation,
-  }
-}
+   import navigation from './components/navigation'
+   import footer from './components/footer'
+   
+   export default {
+     name: 'app',
+     components: {
+       'Navigation': navigation,
+       'Footer':footer
+     }
+   }
 </script>
-
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  
-}
-#body{
-  /* text-align: center; */
-  color: rgb(5, 5, 5);
-  margin-top: 100px;
-}
+   #app {
+   font-family: 'Avenir', Helvetica, Arial, sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   }
+   #body{
+   color: rgb(5, 5, 5);
+   padding-top: 100px; 
+   }
+   .main-container {
+   min-height: 100vh; /* will cover the 100% of viewport */
+   overflow: hidden;
+   display: block;
+   position: relative;
+   padding-bottom: 100px; /* height of your footer */
+   }
 </style>
-
-
-
-
-
-<!--<template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/contact">Contact</router-link>
-    </div>
-    <router-view/>
-  </div>
-</template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>-->
-
-

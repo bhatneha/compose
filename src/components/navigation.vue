@@ -1,4 +1,5 @@
 <template>
+<header>
 <div>
    <b-navbar toggleable="xl" type="dark" variant="faded" fixed="top" id="bar" print="false" tabs>
    <b-navbar-brand href="/">
@@ -15,6 +16,7 @@
       </b-collapse>
    </b-navbar>
 </div>
+</header>
 </template> 
 
 <style scoped>

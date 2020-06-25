@@ -1,64 +1,152 @@
 <template>
-  <div class="container">
-    <form novalidate class="md-layout md-primary" >
-      <md-card class="md-layout-item md-size-100 md-small-size-100">
-        <md-card-header>
-          <div class="md-title">Create key/value</div>
-        </md-card-header>
-
-        <md-card-content v-for="(value, index) in kv" :key="index">
-          <md-field>
-            <label>Key</label>
-            <md-input v-model="key" type="text" required></md-input>
-          </md-field>
-
-          <md-field>
-            <label>Value</label>
-            <md-textarea v-model="textarea" required></md-textarea>
-          </md-field>   
-        </md-card-content>
-
-       <md-card-actions md-alignment="space-between">
-          <md-button class="md-icon-button md-raised" @click="addkv" >
-              <md-icon>add</md-icon>
-          </md-button>
-            <md-button type ="submit" class="md-raised" :disabled="sending" id="but">Save</md-button>
-          </md-card-actions>
-      </md-card>      
-    </form> 
-  </div>
+   <div>
+      <div>
+         <b-navbar toggleable="xl" class="border-bottom border-dark">
+            <b-navbar-nav>
+               <h1>
+                  <b-navbar-brand v-for="item in application.apps" :key="item.name"><b>App: {{item.name}}</b></b-navbar-brand>
+               </h1>
+            </b-navbar-nav>
+         </b-navbar>
+      </div>
+      <div id="table">
+         <div v-for="item in application.apps" :key="item.apps">
+         <md-table v-model="application" md-sort="name" md-sort-order="asc">
+            <md-table-row>
+               <md-table-head>KEY-VALUE</md-table-head>
+            </md-table-row>   
+            <md-table-row v-for="kv in item.kvs" :key="kv.key">
+               <md-table-cell id="kv">
+                  {{ kv.key }}
+                  <div style="float:right">
+                     <router-link v-bind:to="'kvstore'" :active="isActive">
+                        <md-button class="md-icon-button md-flat">
+                           <md-icon>delete</md-icon>
+                        </md-button>
+                     </router-link>
+                  </div>
+                  <div style="float:right">
+                     <router-link v-bind:to="'kvstore'" :active="isActive">
+                        <md-button class="md-icon-button md-flat">
+                           <md-icon>edit</md-icon>
+                        </md-button>
+                     </router-link>
+                  </div>
+                  <div style="float:right">
+                     <router-link v-bind:to="'kvstore'" :active="isActive">
+                        <md-button class="md-icon-button md-flat">
+                           <md-icon>visibility</md-icon>
+                        </md-button>
+                     </router-link>
+                  </div>
+               </md-table-cell>
+            </md-table-row>
+         </md-table>
+         </div>
+      </div>
+   </div>
 </template>
-
 <script>
-
-export default {
-  name: "kvstore",
-  data: () => ({
-    kv: [
-      {
-        key:'',
-        value:''
-      }
-    ]
-   }),
-  methods: {
-    addkv () {
-      this.kv.push({
-        key: '',
-        value: ''
-      })
-    }
-  }
-};
+   export default {
+     name: 'KVStore',
+   //  props: [  
+   // // camelCase in JavaScript  
+   // 'childData'  
+   // ] ,
+   data: () => ({
+       searchKV: null,
+       searchedKV: [],
+       application: {
+          apps: [{
+          name: 'UI',
+          kvs: [
+            {
+              key: 'dev',
+              value: ""
+            },
+            {
+              key: 'testing',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            },
+            {
+              key: 'production',
+              value: ""
+            }
+       ],
+       }]
+       }
+     }),
+   };
 </script>
-
-
 <style>
-#but{
-background-color: grey;
-color: honeydew;
-}
-.container{
-    padding-top: 50px;
-}
+   #table{
+   padding-top: 50px;
+   }
+   #kv{
+   font-size: 15px;
+   }
 </style>
