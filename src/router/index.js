@@ -7,6 +7,7 @@ import welcome from '@/components/welcome'
 import compose from '@/components/compose'
 import createcomp from '@/components/createcomp'
 import kvstore from '@/components/kvstore'
+import kvaction from '@/components/kvaction'
 
 Vue.use(VueRouter)
 
@@ -42,9 +43,14 @@ Vue.use(VueRouter)
     component: createcomp
   },
   {
-    path: '/kvstore',
+    path: '/kvstore/:id',
     name: 'KVStore',
     component: kvstore
+  },
+  {
+    path: '/kvaction/:id/:key',
+    name: 'KVAction',
+    component: kvaction
   },
 ]
 

@@ -33,12 +33,12 @@
             <md-table-row>
                <md-table-head>KEY-VALUE</md-table-head>
             </md-table-row>
-            <md-table-row v-for="item in application" :key="item.app">
+            <md-table-row v-for="item in application" :key="item">
                <md-table-cell  md-label="COMPOSE" md-sort-by="app" id="comp">
                  {{ item.app }}
                </md-table-cell>
 
-               <md-table-cell><div style="float:right"><router-link v-bind:to="'kvstore'" :active="isActive"><md-button class="md-icon-button md-flat">
+               <md-table-cell><div style="float:right"><router-link v-bind:to="{ name: 'KVStore', params: { id: item.id } }" :active="isActive"><md-button class="md-icon-button md-flat">
                      <md-icon>chevron_right</md-icon>
                      </md-button></router-link></div>
                </md-table-cell>
@@ -46,55 +46,19 @@
            
          </md-table>
       </div>
-      <!-- <div>
-      <kvstore childData=application></kvstore>
-      </div> -->
    </div>
 </template>
 <script>
    import axios from 'axios';
-   // import kvstore  from './kvstore.vue';  
-   // const toLower = text => {
-   //     return text.toString().toLowerCase()
-   //   };
-   //   const searchByName = (items, term) => {
-   //     if (term) {
-   //       return items.filter(item => toLower(item.app).includes(toLower(term)));
-   //     }
-   //     return items;
-   //   };
-   
-   
+
    export default {
      name: 'Compose', //this is the name of the component
-   //   components: {  
-   //       kvstore  
-   //       },
-    
+
    data: () => ({
        search: null,
       //  searched: [],
        application: null  
      }),
-   //   methods: {
-   //     searchOnTable() {
-   //       this.searched = searchByName(this.application, this.search);
-   //     }
-   //   },
-   //   created() {
-   //     this.searched = this.application;
-   //   },   
-   
-   // computed: 
-   // {
-   //  filteredApplication:function()
-   //  {
-   //  	 var self=this;
-   //     return this.application.filter(function(cust){return cust.name.toLowerCase().indexOf(self.search.toLowerCase())>=0;});
-   //     //return this.customers;
-   //  }
-   // },
-   
      mounted() {
        const url='http://localhost/v1/getkvs'
        const options={

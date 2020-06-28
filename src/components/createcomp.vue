@@ -20,7 +20,7 @@
 
           <md-field>
             <label>Value</label>
-            <md-textarea v-model="textarea"></md-textarea>
+            <md-textarea></md-textarea>
           </md-field>
         </div>
 

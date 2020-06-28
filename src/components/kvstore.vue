@@ -4,20 +4,19 @@
          <b-navbar toggleable="xl" class="border-bottom border-dark">
             <b-navbar-nav>
                <h1>
-                  <b-navbar-brand v-for="item in application.apps" :key="item.name"><b>App: {{item.name}}</b></b-navbar-brand>
+                  <b-navbar-brand><b>App: {{ $route.params.id }}</b></b-navbar-brand>
                </h1>
             </b-navbar-nav>
          </b-navbar>
       </div>
       <div id="table">
-         <div v-for="item in application.apps" :key="item.apps">
          <md-table v-model="application" md-sort="name" md-sort-order="asc">
             <md-table-row>
                <md-table-head>KEY-VALUE</md-table-head>
             </md-table-row>   
-            <md-table-row v-for="kv in item.kvs" :key="kv.key">
+            <md-table-row v-for="item in application.Data" :key="item" >
                <md-table-cell id="kv">
-                  {{ kv.key }}
+                  {{ item.key }}
                   <div style="float:right">
                      <router-link v-bind:to="'kvstore'" :active="isActive">
                         <md-button class="md-icon-button md-flat">
@@ -27,14 +26,14 @@
                   </div>
                   <div style="float:right">
                      <router-link v-bind:to="'kvstore'" :active="isActive">
-                        <md-button class="md-icon-button md-flat">
+                        <md-button class="md-icon-button md-flat" >
                            <md-icon>edit</md-icon>
                         </md-button>
                      </router-link>
                   </div>
                   <div style="float:right">
-                     <router-link v-bind:to="'kvstore'" :active="isActive">
-                        <md-button class="md-icon-button md-flat">
+                     <router-link v-bind:to="{ name: 'KVAction', params: { id: $route.params.id, key: item.key} }" :active="isActive">
+                        <md-button class="md-icon-button md-flat" >
                            <md-icon>visibility</md-icon>
                         </md-button>
                      </router-link>
@@ -44,107 +43,42 @@
          </md-table>
          </div>
       </div>
-   </div>
 </template>
+
 <script>
+
+import axios from 'axios';
+
    export default {
      name: 'KVStore',
-   //  props: [  
-   // // camelCase in JavaScript  
-   // 'childData'  
-   // ] ,
+   // created() {
+   //          this.data = this.$route.params.data;
+   //      },
    data: () => ({
-       searchKV: null,
-       searchedKV: [],
-       application: {
-          apps: [{
-          name: 'UI',
-          kvs: [
-            {
-              key: 'dev',
-              value: ""
-            },
-            {
-              key: 'testing',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            },
-            {
-              key: 'production',
-              value: ""
-            }
-       ],
-       }]
-       }
+      application: null,
      }),
+   created() {
+       const url='http://localhost/v1/getvalue'
+       const options={
+          method:'POST',
+          headers:{
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify({
+              id: this.$route.params.id,
+              decode: true,
+              all: true
+          })
+       };
+       axios(url,options)
+      .then(response => (this.application = response.data.data))
+      .catch(error => console.log(error))
+   }
    };
 </script>
 <style>
    #table{
-   padding-top: 50px;
+      
    }
    #kv{
    font-size: 15px;
