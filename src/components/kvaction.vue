@@ -10,24 +10,41 @@
          </b-navbar>
       </div>
       <div id="json">
-    <!-- <json-viewer :value="jsonData" :expand-depth=5 copyable boxed></json-viewer> -->
-    <v-jsoneditor v-model="jsonData" :options="options" :height="400" @error="onError"></v-jsoneditor>
+    <codemirror v-model="code" :options="cmOption" />
     </div>
 </div>
 </template>
 
 <script>
-    import VJsoneditor from 'v-jsoneditor/src/index'
     import axios from 'axios';
-    // import JsonViewer from 'vue-json-viewer'
+    //import dedent from 'dedent'
+    import { codemirror } from 'vue-codemirror'
+    // base
+    import 'codemirror/lib/codemirror.css'
+    // language
+    import 'codemirror/mode/yaml/yaml.js'
+    // theme css
+    import 'codemirror/theme/base16-dark.css'
 
     export default {
         name: 'KVAction',
         components: {
-            VJsoneditor
+            codemirror
         },
       data: () => ({
-      jsonData: {}
+        cmOption: {
+            tabSize: 4,
+            styleActiveLine: true,
+            lineNumbers: true,
+            line: true,
+            mode: {
+                name: 'yaml',
+                json: true
+            },
+            theme: 'base16-dark',
+            viewportMargin: Infinity
+        },
+        code: ""
      }),
    created() {
        const url='http://localhost/v1/getvalue'
@@ -43,13 +60,8 @@
           })
        };
        axios(url,options)
-      .then(response => (this.jsonData = JSON.parse(response.data.data.Data[0].value)))
+      .then(response => (this.code = JSON.stringify(JSON.parse(response.data.data.Data[0].value), null, 2)))
       .catch(error => console.log(error))
-   },
-   methods: { 
-    pushkv() {
-        this.json = this.kvdata.value;
-    }
    }
 }
 </script>

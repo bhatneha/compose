@@ -51,7 +51,7 @@ Vue.use(VueRouter)
     path: '/kvaction/:id/:key',
     name: 'KVAction',
     component: kvaction
-  },
+  }
 ]
 
 const router = new VueRouter({

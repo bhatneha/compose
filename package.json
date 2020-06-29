@@ -14,9 +14,13 @@
     "bootstrap-vue": "^2.13.1",
     "core-js": "^3.6.4",
     "cors": "^2.8.5",
+    "dedent": "^0.7.0",
     "mdbvue": "^6.7.1",
     "qs-stringify": "^1.2.1",
+    "v-jsoneditor": "^1.4.1",
     "vue": "^2.6.11",
+    "vue-codemirror": "^4.0.6",
+    "vue-json-pretty": "^1.6.3",
     "vue-material": "^1.0.0-beta-13",
     "vue-router": "^3.1.6",
     "vuex": "^3.1.3"

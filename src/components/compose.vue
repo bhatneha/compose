@@ -9,7 +9,7 @@
             </b-navbar-nav>
             <b-navbar-nav>
                <div>
-                  <router-link v-bind:to="'createcomp'" :active="isActive">
+                  <router-link v-bind:to="'createcomp'">
                      <md-button class="md-icon-button md-raised">
                         <md-icon>add_box</md-icon>
                      </md-button>
@@ -24,7 +24,7 @@
                   </div>
                </b-nav-form>
             </b-navbar-nav>
-         </b-navbar>
+         </b-navbar> 
       </div>
       <div id="table" >
          <md-table v-model="searched">
@@ -38,7 +38,7 @@
                  {{ item.app }}
                </md-table-cell>
 
-               <md-table-cell><div style="float:right"><router-link v-bind:to="{ name: 'KVStore', params: { id: item.id } }" :active="isActive"><md-button class="md-icon-button md-flat">
+               <md-table-cell><div style="float:right"><router-link v-bind:to="{ name: 'KVStore', params: { id: item.id } }"><md-button class="md-icon-button md-flat">
                      <md-icon>chevron_right</md-icon>
                      </md-button></router-link></div>
                </md-table-cell>
@@ -55,8 +55,8 @@
      name: 'Compose', //this is the name of the component
 
    data: () => ({
-       search: null,
-      //  searched: [],
+      //search: null,
+      //searched: [],
        application: null  
      }),
      mounted() {

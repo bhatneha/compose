@@ -18,21 +18,21 @@
                <md-table-cell id="kv">
                   {{ item.key }}
                   <div style="float:right">
-                     <router-link v-bind:to="'kvstore'" :active="isActive">
+                     <router-link v-bind:to="'kvstore'">
                         <md-button class="md-icon-button md-flat">
                            <md-icon>delete</md-icon>
                         </md-button>
                      </router-link>
                   </div>
                   <div style="float:right">
-                     <router-link v-bind:to="'kvstore'" :active="isActive">
+                     <router-link v-bind:to="kvstore">
                         <md-button class="md-icon-button md-flat" >
                            <md-icon>edit</md-icon>
                         </md-button>
                      </router-link>
                   </div>
                   <div style="float:right">
-                     <router-link v-bind:to="{ name: 'KVAction', params: { id: $route.params.id, key: item.key} }" :active="isActive">
+                     <router-link v-bind:to="{ name: 'KVAction', params: { id: $route.params.id, key: item.key} }">
                         <md-button class="md-icon-button md-flat" >
                            <md-icon>visibility</md-icon>
                         </md-button>
@@ -78,7 +78,7 @@ import axios from 'axios';
 </script>
 <style>
    #table{
-      
+      padding-top: 50px;
    }
    #kv{
    font-size: 15px;
