@@ -7,7 +7,8 @@ import welcome from '@/components/welcome'
 import compose from '@/components/compose'
 import createcomp from '@/components/createcomp'
 import kvstore from '@/components/kvstore'
-import kvaction from '@/components/kvaction'
+import viewkv from '@/components/viewkv'
+import deletekv from '@/components/deletekv'
 
 Vue.use(VueRouter)
 
@@ -48,9 +49,14 @@ Vue.use(VueRouter)
     component: kvstore
   },
   {
-    path: '/kvaction/:id/:key',
-    name: 'KVAction',
-    component: kvaction
+    path: '/viewkv/:id/:key',
+    name: 'ViewKV',
+    component: viewkv
+  },
+  {
+    path: '/deletekv/:id/:key',
+    name: 'DeleteKV',
+    component: deletekv
   }
 ]
 
