@@ -7,20 +7,20 @@
         </md-card-header>
 
         <md-card-content>
-          <md-field>
+          <md-field required>
             <label>Application</label>
-            <md-input v-model="app" type="text"></md-input>
+            <md-input v-model="app" type="text" required=true></md-input>
           </md-field>
-  
+
         <div v-for="data in datas" :key="data">
           <md-field>
             <label>Key</label>
-            <md-input type="text" v-model="data.key"></md-input>
+            <md-input type="text" v-model="data.key" required=true></md-input>
           </md-field>
 
           <md-field>
             <label>Value</label>
-            <md-textarea v-model="data.value"></md-textarea>
+            <md-textarea v-model="data.value" required=true></md-textarea>
           </md-field>
         </div>
 
@@ -33,7 +33,7 @@
               <md-icon>remove</md-icon>
           </md-button>
             </div>
-            <md-button type="submit" class="md-raised"  id="but" @click="formSubmit">Save</md-button>
+            <button type="submit" class="button btn" @click="formSubmit">SAVE</button>
           </md-card-actions>
         </md-card-content>
       </md-card>
@@ -53,7 +53,7 @@ export default {
         value:''
       }
     ],
-      output: ''
+      output: '',
   }),
   methods: {
     addkv () {
@@ -89,9 +89,3 @@ export default {
   }
 };
 </script>
-<style>
-#but{
-background-color: grey;
-color: honeydew;
-}
-</style>

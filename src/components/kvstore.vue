@@ -3,20 +3,20 @@
       <div>
          <b-navbar toggleable="xl" class="border-bottom border-dark">
             <h1>
-                  <b-navbar-brand><b>App: {{ $route.params.id }}</b></b-navbar-brand>
+               <b-navbar-brand><b>App: {{ $route.params.id }}</b></b-navbar-brand>
             </h1>  
-            <b-navbar-nav class="ml-auto">       
-            <b-nav-form>
-            <li class="nav-item">
-                <a class="nav-link nav-link-icon" href="#">
-                    <span class="nav-link nav-link-inner--text"> <router-link v-bind:to="'kvstore'">
+            <b-navbar-nav class="ml-auto">
+               <b-nav-form>
+                  <li class="nav-item">
+                     <span class="nav-link nav-link-inner--text">
+                        <router-link v-bind:to="'kvstore'">
                         <md-button class="md-icon-button md-flat" @click="deletekv">
                            <md-icon>delete</md-icon>
                         </md-button>
-                     </router-link></span>
-                </a>
-            </li>
-            </b-nav-form>
+                        </router-link>
+                     </span>
+                  </li>
+               </b-nav-form>
             </b-navbar-nav>
          </b-navbar>
       </div>
