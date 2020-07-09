@@ -16,6 +16,7 @@
     "core-js": "^3.6.4",
     "cors": "^2.8.5",
     "dedent": "^0.7.0",
+    "json2yaml": "^1.1.0",
     "mdbvue": "^6.7.1",
     "qs-stringify": "^1.2.1",
     "v-jsoneditor": "^1.4.1",

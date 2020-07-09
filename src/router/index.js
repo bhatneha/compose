@@ -9,6 +9,7 @@ import createcomp from '@/components/createcomp'
 import kvstore from '@/components/kvstore'
 import viewkv from '@/components/viewkv'
 import deletekv from '@/components/deletekv'
+import createkv from '@/components/createkv'
 
 Vue.use(VueRouter)
 
@@ -44,7 +45,7 @@ Vue.use(VueRouter)
     component: createcomp
   },
   {
-    path: '/kvstore/:id',
+    path: '/kvstore/:id/:app',
     name: 'KVStore',
     component: kvstore
   },
@@ -57,6 +58,11 @@ Vue.use(VueRouter)
     path: '/deletekv/:id/:key',
     name: 'DeleteKV',
     component: deletekv
+  },
+  {
+    path: '/createkv/:id/:app',
+    name: 'CreateKV',
+    component: createkv
   }
 ]
 

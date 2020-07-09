@@ -2,7 +2,7 @@
 <footer class="footer">
     <div class="copyright text-center align-text-bottom">
         &copy; {{ new Date().getFullYear() }}
-        <a href="https://www.creative-tim.com/?ref=mdf-vuejs" target="_blank">Compose</a>, made with love for a better web
+        <a href="https://github.com/bhatneha/compose" target="_blank">Compose</a>, create configuration for your application.
       </div>
 </footer>
 </template>

@@ -3,13 +3,13 @@
     <form novalidate class="md-layout md-primary">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
-          <div class="md-title">Create Compose</div>
+          <div class="md-title">Create Key-Value</div>
         </md-card-header>
 
         <md-card-content>
           <md-field>
-            <label>Application</label>
-            <md-input v-model="app" type="text"></md-input>
+            <label><b>App: </b>{{ $route.params.app }}</label>
+            <md-input type="text" disabled></md-input>
           </md-field>
 
         <div v-for="data in datas" :key="data">
@@ -33,7 +33,7 @@
               <md-icon>remove</md-icon>
           </md-button>
             </div>
-            <button type="submit" class="comp-button" @click="formSubmit" :disabled="this.app.length == 0" >SAVE</button>
+            <button type="submit" class="comp-button" @click="updatekv">SAVE</button>
           </md-card-actions>
         </md-card-content>
       </md-card>
@@ -43,27 +43,17 @@
 
 <script>
 import axios from 'axios';
-
 export default {
-  name: "Createcomp",
+  name: "CreateKV",
   data: () => ({
-    app: '',
     datas: [
       {
         key:'',
         value:''
       }
     ],
-    output: '',
+      output: '',
   }),
-  computed: {
-    validated() {
-      if ((this.app).length === 0) {
-        return true
-      }
-      return false
-    }
-  },
   methods: {
     addkv () {
       this.datas.push({
@@ -74,35 +64,28 @@ export default {
     removekv () {
       this.datas.splice(-1,1)
     },
-    formSubmit(e) {
+    updatekv(e) {
       e.preventDefault();
-      const url='http://localhost/v1/setvalue'
+      const url='http://localhost/v1/updatevalue'
       const options={
-          method:'POST',
+          method:'PATCH',
           headers:{
             'Content-Type': 'application/json'
           },
+
           data: JSON.stringify({
-              app: this.app,
+              id: this.$route.params.id,
               data: this.datas
           })
       };
-      console.log(options.data)
       axios(url,options)
       .then(response => {
         if(response.status === 200) {
-            this.$router.push({ name : 'Compose' });}
+            this.$router.push({ name : 'KVStore' });}
         }
       )
       .catch(error => console.log(error))
-    }
+  }
   }
 };
 </script>
-
-<style>
-    .CodeMirror {
-        border: 1px solid #eee;
-        height: auto;
-    }
-</style>

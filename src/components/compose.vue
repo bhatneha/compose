@@ -31,14 +31,14 @@
             <md-table-empty-state md-label="No compose found" :md-description="`No compose found for this '${search}' query. Try a different search term`">
             </md-table-empty-state>
             <md-table-row>
-               <md-table-head>KEY-VALUE</md-table-head>
+               <md-table-head>APPLICATIONS</md-table-head>
             </md-table-row>
             <md-table-row v-for="item in application" :key="item">
                <md-table-cell  md-label="COMPOSE" md-sort-by="app" id="comp">
                  {{ item.app }}
                </md-table-cell>
 
-               <md-table-cell><div style="float:right"><router-link v-bind:to="{ name: 'KVStore', params: { id: item.id } }"><md-button class="md-icon-button md-flat">
+               <md-table-cell><div style="float:right"><router-link v-bind:to="{ name: 'KVStore', params: { id: item.id, app: item.app} }"><md-button class="md-icon-button md-flat">
                      <md-icon>chevron_right</md-icon>
                      </md-button></router-link></div>
                </md-table-cell>
