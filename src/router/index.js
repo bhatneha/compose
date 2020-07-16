@@ -50,7 +50,7 @@ Vue.use(VueRouter)
     component: kvstore
   },
   {
-    path: '/viewkv/:id/:key',
+    path: '/viewkv/:id/:app/:key',
     name: 'ViewKV',
     component: viewkv
   },

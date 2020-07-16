@@ -1,44 +1,46 @@
 <template>
   <div>
-    <form novalidate class="md-layout md-primary">
-      <md-card class="md-layout-item md-size-100 md-small-size-100">
-        <md-card-header>
-          <div class="md-title">Create Compose</div>
-        </md-card-header>
+    <b-card class="shadow-sm p-3 mb-5 bg-white rounded">
+      <router-link v-bind:to="'compose'">
+        <md-button class="md-icon-button md-raised" id="backbutton">
+          <md-icon>arrow_back</md-icon>
+        </md-button>
+      </router-link>
+      <b-card-header header-bg-variant="transparent" header-tag="h4">Create Compose</b-card-header>
+      <b-card-body>
+          <b-form>
+              <b-form-group label="Application" label-size="md" label-class="font-weight-bold">
+              <b-form-input v-model="application.name"></b-form-input>
+              </b-form-group>
 
-        <md-card-content>
-          <md-field>
-            <label>Application</label>
-            <md-input v-model="app" type="text"></md-input>
-          </md-field>
+              <div v-for="data in application.datas" :key="data.value">
+              <b-form-group label="Key" label-size="md" label-class="font-weight-bold">
+              <b-form-input v-model="data.key"></b-form-input>
+              </b-form-group>
 
-        <div v-for="data in datas" :key="data">
-          <md-field>
-            <label>Key</label>
-            <md-input type="text" v-model="data.key"></md-input>
-          </md-field>
-
-          <md-field>
-            <label>Value</label>
-            <md-textarea v-model="data.value"></md-textarea>
-          </md-field>
-        </div>
-
-          <md-card-actions md-alignment="space-between">
-            <div>
-           <md-button class="md-icon-button md-raised" @click="addkv">
-              <md-icon>add</md-icon>
-          </md-button>
-          <md-button class="md-icon-button md-raised" @click="removekv()">
-              <md-icon>remove</md-icon>
-          </md-button>
-            </div>
-            <button type="submit" class="comp-button" @click="formSubmit" :disabled="this.app.length == 0" >SAVE</button>
-          </md-card-actions>
-        </md-card-content>
-      </md-card>
-    </form>
-  </div>
+              <b-form-group label="Value" label-size="md" label-class="font-weight-bold">
+              <b-form-textarea rows="6" max-rows="80" v-model="data.value"></b-form-textarea>
+              </b-form-group>
+              </div>
+          </b-form>
+      </b-card-body>
+      <b-card-footer footer-bg-variant="transparent">
+          <b-row cols="2">
+              <b-col order="1">
+                  <md-button class="md-icon-button md-raised" @click="addkv">
+                      <md-icon>add</md-icon>
+                  </md-button>
+                  <md-button class="md-icon-button md-raised" @click="removekv()">
+                      <md-icon>remove</md-icon>
+                  </md-button>
+              </b-col>
+              <b-col order="2" class="text-right">
+                  <b-button type="submit" variant="secondary" @click="formSubmit" :disabled='isDisabled'>SAVE</b-button>
+              </b-col>
+          </b-row>
+      </b-card-footer>
+    </b-card>
+</div>
 </template>
 
 <script>
@@ -47,32 +49,40 @@ import axios from 'axios';
 export default {
   name: "Createcomp",
   data: () => ({
-    app: '',
-    datas: [
-      {
-        key:'',
-        value:''
-      }
-    ],
+    application: {
+      name: '',
+      datas: [
+        {
+          key:'',
+          value:''
+        }
+      ],
+    },
     output: '',
   }),
   computed: {
-    validated() {
-      if ((this.app).length === 0) {
+     isDisabled: function(){
+      var data;
+      if (this.application.name.length == 0) {
         return true
       }
+      for (data of this.application.datas) {
+        if (data.key.length == 0) {
+          return true
+        }
+      }
       return false
-    }
+     }
   },
   methods: {
     addkv () {
-      this.datas.push({
+      this.application.datas.push({
         key: '',
         value: ''
       })
     },
     removekv () {
-      this.datas.splice(-1,1)
+      this.application.datas.splice(-1,1)
     },
     formSubmit(e) {
       e.preventDefault();
@@ -83,11 +93,10 @@ export default {
             'Content-Type': 'application/json'
           },
           data: JSON.stringify({
-              app: this.app,
-              data: this.datas
+              app: this.application.name,
+              data: this.application.datas
           })
       };
-      console.log(options.data)
       axios(url,options)
       .then(response => {
         if(response.status === 200) {
@@ -101,8 +110,7 @@ export default {
 </script>
 
 <style>
-    .CodeMirror {
-        border: 1px solid #eee;
-        height: auto;
-    }
+#backbutton{
+  float: right;
+}
 </style>

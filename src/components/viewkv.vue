@@ -7,6 +7,11 @@
                     <b-navbar-brand><b>Key: </b><b id="text-color">{{ $route.params.key }}</b></b-navbar-brand>
                 </h1>
             </b-navbar-nav>
+            <router-link v-bind:to="{ name: 'KVStore', params: { id: this.$route.params.id, app: this.$route.params.app} }">
+              <md-button class="md-icon-button md-raised" id="backbutton">
+               <md-icon>arrow_back</md-icon>
+              </md-button>
+            </router-link>
         </b-navbar>
     </div>
 
@@ -16,13 +21,13 @@
                 <b-alert variant="success" dismissible :show="alertProps.updatesuccess" @dismissed="alertProps.updatesuccess=false"> {{ alertProps.successMessage }} </b-alert>
                 <b-alert variant="danger" dismissible :show="alertProps.updatefail" @dismissed="alertProps.updatefail=false"> {{ alertProps.failureMessage }} </b-alert>
                 <div>
-                    <toggle-button :value="Boolean(isyaml.yaml)" :labels="{checked: 'yaml', unchecked: 'json'}" :color="{checked: '#808080', unchecked: '#808080'}" :font-size=18 :width=90 :height=25 @change="jsontoyaml($event)"/>
+                    <toggle-button :value="Boolean(isyaml.yaml)" :labels="{checked: 'yaml', unchecked: 'json'}" :color="{checked: '#6c757d', unchecked: '#6c757d'}" :font-size=18 :width=90 :height=25 @change="jsontoyaml($event)"/>
                 </div>
-                <codemirror :options="cmOption" v-model="code"/>
+                <codemirror :options="cmOption" v-model="code" id="codem"/>
             </fieldset>
-            <button type="submit" class="comp-button" @click.prevent="updatekv">UPDATE</button>
+            <b-button type="submit" class="comp-button" variant="secondary" @click.prevent="updatekv">UPDATE</b-button>
             <router-link v-bind:to="{ name: 'DeleteKV', params: { id: $route.params.id, key: $route.params.key} }">
-                <button type="submit" class="comp-button" style="margin-left:15px">DELETE</button>
+                <b-button type="submit" class="comp-button" variant="secondary" style="margin-left:15px">DELETE</b-button>
             </router-link>
         </form>
     </div>
@@ -89,8 +94,8 @@
             };
             axios(url,options)
             .then(response => (
-                this.isyaml.rawJson = JSON.stringify(JSON.parse(response.data.data.Data[0].value), null, 2),
-                this.isyaml.rawOutput = JSON.parse(response.data.data.Data[0].value),
+                this.isyaml.rawJson = JSON.stringify(JSON.parse(response.data.response.data[0].value), null, 2),
+                this.isyaml.rawOutput = JSON.parse(response.data.response.data[0].value),
                 this.code = this.isyaml.rawJson 
             ))
             .catch(error => console.log(error))
@@ -151,23 +156,10 @@
         padding-top: 50px;
     }
     .comp-button {
-        background-color: grey;
-        border: none;
-        color: honeydew;
-        padding: 6px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 14px;
-        margin: 30px 2px;
-        transition-duration: 0.6s;
-        cursor: pointer;
-        border-radius: 3px;
-        box-shadow: 0 4px 12px 0 rgba(0,0,0,0.19);
+        margin-top: 20px;
     }
-    .comp-button:hover {
-        background-color: rgb(151, 148, 148);
-        color: honeydew;
+    #codem{
+        margin-top: 10px;
     }
     .CodeMirror {
         border: 1px solid #eee;

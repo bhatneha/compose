@@ -16,11 +16,9 @@
                <b-nav-form>
                   <li class="nav-item">
                      <span class="nav-link nav-link-inner--text">
-                        <router-link v-bind:to="'kvstore'">
                         <md-button class="md-icon-button md-flat" @click="deletekv">
                            <md-icon>delete</md-icon>
                         </md-button>
-                        </router-link>
                      </span>
                   </li>
                </b-nav-form>
@@ -33,7 +31,7 @@
             <md-table-row>
                <md-table-head>KEY-VALUE</md-table-head>
             </md-table-row>   
-            <md-table-row v-for="item in application.Data" :key="item" >
+            <md-table-row v-for="item in application.data" :key="item.key" >
                <md-table-cell id="kv">
                   {{ item.key }}
                   <div style="float:right">
@@ -44,7 +42,7 @@
                      </router-link>
                   </div>
                   <div style="float:right">
-                     <router-link v-bind:to="{ name: 'ViewKV', params: { id: $route.params.id, key: item.key} }">
+                     <router-link v-bind:to="{ name: 'ViewKV', params: { id: $route.params.id, app: $route.params.app, key: item.key} }">
                         <md-button class="md-icon-button md-flat" >
                            <md-icon>visibility</md-icon>
                         </md-button>
@@ -64,7 +62,7 @@ import axios from 'axios';
    export default {
       name: 'KVStore',
       data: () => ({
-         application: null,
+         application: {},
       }),
       created() {
          const url='http://localhost/v1/getvalue'
@@ -80,7 +78,7 @@ import axios from 'axios';
             })
          };
          axios(url,options)
-         .then(response => (this.application = response.data.data))
+         .then(response => (this.application = response.data.response))
          .catch(error => console.log(error))
       },
       methods:{
@@ -116,6 +114,6 @@ import axios from 'axios';
       font-size: 15px;
    }
    #text-color{
-      color: grey;
+      color: #6c757d;
    }
 </style>

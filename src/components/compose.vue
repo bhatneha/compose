@@ -18,22 +18,17 @@
             </b-navbar-nav>
             <b-navbar-nav class="ml-auto">
                <b-nav-form>
-                  <b-form-input size="sm" class="mr-sm-2" placeholder="Search" v-model="search" @input="searchOnTable"></b-form-input>
-                  <div v-for="customer in filteredApplication" :key="customer.app">
-                  <span>{{customer.app}}</span>
-                  </div>
+                  <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
                </b-nav-form>
             </b-navbar-nav>
          </b-navbar> 
       </div>
       <div id="table" >
-         <md-table v-model="searched">
-            <md-table-empty-state md-label="No compose found" :md-description="`No compose found for this '${search}' query. Try a different search term`">
-            </md-table-empty-state>
+         <md-table>
             <md-table-row>
                <md-table-head>APPLICATIONS</md-table-head>
             </md-table-row>
-            <md-table-row v-for="item in application" :key="item">
+            <md-table-row v-for="item in application" :key="item.app">
                <md-table-cell  md-label="COMPOSE" md-sort-by="app" id="comp">
                  {{ item.app }}
                </md-table-cell>
@@ -55,9 +50,7 @@
      name: 'Compose', //this is the name of the component
 
    data: () => ({
-      //search: null,
-      //searched: [],
-       application: null  
+       application: {}
      }),
      mounted() {
        const url='http://localhost/v1/getkvs'
@@ -71,7 +64,7 @@
           })
        };
        axios(url,options)
-      .then(response => (this.application = response.data.data))
+      .then(response => (this.application = response.data.response))
       .catch(error => console.log(error))
      }
    };
