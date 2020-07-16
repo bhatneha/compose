@@ -25,24 +25,30 @@
             </b-navbar-nav>
          </b-navbar>
       </div>
-
-      <div id="table">
-         <md-table v-model="application" md-sort="name" md-sort-order="asc">
+      <div>
+         <md-table v-model="application" md-sort="name" md-sort-order="asc" style="padding-top:20px">
             <md-table-row>
-               <md-table-head>KEY-VALUE</md-table-head>
+               <b-row class="my-3" cols="2">
+                  <b-col  order="1">
+                     <md-table-head>KEY-VALUE</md-table-head>
+                  </b-col>
+                  <b-col sm="2" offset-sm="1" order="2" class="my-2 ml-auto">
+                     <b-form-input size="sm" class="mr-sm-4" placeholder="Search" v-model="search" type="text"></b-form-input>
+                  </b-col>
+               </b-row>
             </md-table-row>   
-            <md-table-row v-for="item in application.data" :key="item.key" >
+            <md-table-row v-for="filtereddata in filteredList" :key="filtereddata.key">
                <md-table-cell id="kv">
-                  {{ item.key }}
+                  {{ filtereddata.key }}
                   <div style="float:right">
-                     <router-link v-bind:to="{ name: 'DeleteKV', params: { id: $route.params.id, key: item.key} }">
+                     <router-link v-bind:to="{ name: 'DeleteKV', params: { id: $route.params.id, key: filtereddata.key} }">
                         <md-button class="md-icon-button md-flat">
                            <md-icon>delete</md-icon>
                         </md-button>
                      </router-link>
                   </div>
                   <div style="float:right">
-                     <router-link v-bind:to="{ name: 'ViewKV', params: { id: $route.params.id, app: $route.params.app, key: item.key} }">
+                     <router-link v-bind:to="{ name: 'ViewKV', params: { id: $route.params.id, app: $route.params.app, key: filtereddata.key} }">
                         <md-button class="md-icon-button md-flat" >
                            <md-icon>visibility</md-icon>
                         </md-button>
@@ -62,8 +68,19 @@ import axios from 'axios';
    export default {
       name: 'KVStore',
       data: () => ({
-         application: {},
+         search: '',
+         application: [],
       }),
+      computed: {
+         filteredList() {
+            if (this.application.length != 0) {
+               return this.application.data.filter(filtereddata => {
+               return filtereddata.key.toLowerCase().includes(this.search.toLowerCase())
+               })
+            }
+            return this.application.data
+         }
+      },
       created() {
          const url='http://localhost/v1/getvalue'
          const options={
@@ -107,9 +124,6 @@ import axios from 'axios';
 };
 </script>
 <style>
-   #table{
-      padding-top: 50px;
-   }
    #kv{
       font-size: 15px;
    }

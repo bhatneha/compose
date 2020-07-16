@@ -18,7 +18,7 @@
             </b-navbar-nav>
             <b-navbar-nav class="ml-auto">
                <b-nav-form>
-                  <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
+                  <b-form-input size="sm" class="mr-sm-2" placeholder="Search" v-model="search" type="text"></b-form-input>
                </b-nav-form>
             </b-navbar-nav>
          </b-navbar> 
@@ -28,17 +28,17 @@
             <md-table-row>
                <md-table-head>APPLICATIONS</md-table-head>
             </md-table-row>
-            <md-table-row v-for="item in application" :key="item.app">
+
+               <md-table-row v-for="filteredapp in filteredList" :key="filteredapp.app">
                <md-table-cell  md-label="COMPOSE" md-sort-by="app" id="comp">
-                 {{ item.app }}
+                 {{ filteredapp.app }}
                </md-table-cell>
 
-               <md-table-cell><div style="float:right"><router-link v-bind:to="{ name: 'KVStore', params: { id: item.id, app: item.app} }"><md-button class="md-icon-button md-flat">
+               <md-table-cell><div style="float:right"><router-link v-bind:to="{ name: 'KVStore', params: { id: filteredapp.id, app: filteredapp.app} }"><md-button class="md-icon-button md-flat">
                      <md-icon>chevron_right</md-icon>
                      </md-button></router-link></div>
                </md-table-cell>
             </md-table-row>
-           
          </md-table>
       </div>
    </div>
@@ -47,31 +47,42 @@
    import axios from 'axios';
 
    export default {
-     name: 'Compose', //this is the name of the component
+      name: 'Compose', //this is the name of the component
 
-   data: () => ({
-       application: {}
-     }),
-     mounted() {
-       const url='http://localhost/v1/getkvs'
-       const options={
-          method:'POST',
-          headers:{
+      data: () => ({
+         search: '',
+         applications: []
+      }),
+      computed: {
+         filteredList() {
+            if (this.applications.length != 0) {
+               return this.applications.filter(filteredapp => {
+               return filteredapp.app.toLowerCase().includes(this.search.toLowerCase())
+               })
+            }
+            return this.applications
+         }
+      },
+      mounted() {
+         const url='http://localhost/v1/getkvs'
+         const options={
+            method:'POST',
+            headers:{
             'Content-Type': 'application/json'
-          },
-          data: JSON.stringify({
-              decode: false
-          })
-       };
-       axios(url,options)
-      .then(response => (this.application = response.data.response))
+            },
+            data: JSON.stringify({
+               decode: false
+            })
+         };
+         axios(url,options)
+      .then(response => (this.applications = response.data.response))
       .catch(error => console.log(error))
-     }
+      }
    };
 </script>
 <style>
    #table{
-   padding-top: 50px;
+   padding-top: 30px;
    }
    #comp{
      font-size: 15px;
