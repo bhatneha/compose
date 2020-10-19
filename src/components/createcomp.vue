@@ -30,12 +30,12 @@
                   <md-button class="md-icon-button md-raised" @click="addkv">
                       <md-icon>add</md-icon>
                   </md-button>
-                  <md-button class="md-icon-button md-raised" @click="removekv()">
+                  <md-button class="md-icon-button md-raised" @click="removekv">
                       <md-icon>remove</md-icon>
                   </md-button>
               </b-col>
               <b-col order="2" class="text-right">
-                  <b-button type="submit" variant="secondary" @click="formSubmit" :disabled='isDisabled'>SAVE</b-button>
+                  <b-button type="submit" variant="secondary" @click="createcompose" :disabled='isDisabled'>SAVE</b-button>
               </b-col>
           </b-row>
       </b-card-footer>
@@ -44,10 +44,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+import apiCreateCompose from '../mixins/apimixin.js'
 
 export default {
   name: "Createcomp",
+  mixins: [apiCreateCompose],
   data: () => ({
     application: {
       name: '',
@@ -59,6 +60,10 @@ export default {
       ],
     },
     output: '',
+    inputdata: {
+      app: null,
+      data: null
+    }
   }),
   computed: {
      isDisabled: function(){
@@ -84,26 +89,21 @@ export default {
     removekv () {
       this.application.datas.splice(-1,1)
     },
-    formSubmit(e) {
+    createcompose: function(e) {
       e.preventDefault();
-      const url='http://localhost/v1/setvalue'
-      const options={
-          method:'POST',
-          headers:{
-            'Content-Type': 'application/json'
-          },
-          data: JSON.stringify({
-              app: this.application.name,
-              data: this.application.datas
-          })
-      };
-      axios(url,options)
-      .then(response => {
-        if(response.status === 200) {
-            this.$router.push({ name : 'Compose' });}
+      this.inputdata ={
+        app: this.application.name,
+        data: this.application.datas
+      }
+      this.apiCreateCompose(this.inputdata)
+      .then((resp) => {
+        if(resp.status === 200) {
+          this.$router.push({ name : 'Compose' });
         }
-      )
-      .catch(error => console.log(error))
+      })
+      .catch((err) => {
+         console.log(err)
+      })
     }
   }
 };

@@ -43,43 +43,51 @@
       </div>
    </div>
 </template>
+
 <script>
-   import axios from 'axios';
+import apiGetKVS from '../mixins/apimixin.js'
 
-   export default {
-      name: 'Compose', //this is the name of the component
+export default {
 
-      data: () => ({
-         search: '',
-         applications: []
-      }),
-      computed: {
-         filteredList() {
-            if (this.applications.length != 0) {
-               return this.applications.filter(filteredapp => {
-               return filteredapp.app.toLowerCase().includes(this.search.toLowerCase())
-               })
-            }
-            return this.applications
-         }
-      },
-      mounted() {
-         const url='http://localhost/v1/getkvs'
-         const options={
-            method:'POST',
-            headers:{
-            'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({
-               decode: false
-            })
-         };
-         axios(url,options)
-      .then(response => (this.applications = response.data.response))
-      .catch(error => console.log(error))
+   name: 'Compose', //this is the name of the component
+   mixins: [apiGetKVS],
+   data: () => ({
+      search: '',
+      applications: [],
+      inputdata: {
+         decode: false,
       }
-   };
+   }),
+   computed: {
+      filteredList() {
+         if (this.applications.length != 0) {
+            return this.applications.filter(filteredapp => {
+            return filteredapp.app.toLowerCase().includes(this.search.toLowerCase())
+            })
+         }
+         return this.applications
+      }
+   },
+   created() {
+      this.getdata()
+   },
+   methods: {
+      getdata: function() {
+      this.inputdata ={
+         decode: true
+      }
+      this.apiGetKVS(this.inputdata)
+      .then((resp) => {
+         this.applications = resp.response
+      })
+      .catch((err) => {
+         console.log(err)
+      })
+      }
+   }
+};
 </script>
+
 <style>
    #table{
    padding-top: 30px;

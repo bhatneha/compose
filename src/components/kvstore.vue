@@ -16,7 +16,7 @@
                <b-nav-form>
                   <li class="nav-item">
                      <span class="nav-link nav-link-inner--text">
-                        <md-button class="md-icon-button md-flat" @click="deletekv">
+                        <md-button class="md-icon-button md-flat" @click="deletecompose">
                            <md-icon>delete</md-icon>
                         </md-button>
                      </span>
@@ -41,11 +41,10 @@
                <md-table-cell id="kv">
                   {{ filtereddata.key }}
                   <div style="float:right">
-                     <router-link v-bind:to="{ name: 'DeleteKV', params: { id: $route.params.id, key: filtereddata.key} }">
-                        <md-button class="md-icon-button md-flat">
+                      <!--router-link v-bind:to="{ name: 'DeleteKV', params: { id: $route.params.id, key: filtereddata.key} }"-->
+                        <md-button class="md-icon-button md-flat" @click.prevent="deletekv(filtereddata.key)">
                            <md-icon>delete</md-icon>
                         </md-button>
-                     </router-link>
                   </div>
                   <div style="float:right">
                      <router-link v-bind:to="{ name: 'ViewKV', params: { id: $route.params.id, app: $route.params.app, key: filtereddata.key} }">
@@ -62,65 +61,91 @@
 </template>
 
 <script>
+import apiGetValue from '../mixins/apimixin.js'
+import apiDeleteComposeORkv from '../mixins/apimixin.js'
 
-import axios from 'axios';
+export default {
 
-   export default {
-      name: 'KVStore',
-      data: () => ({
-         search: '',
-         application: [],
-      }),
-      computed: {
-         filteredList() {
-            if (this.application.length != 0) {
-               return this.application.data.filter(filtereddata => {
-               return filtereddata.key.toLowerCase().includes(this.search.toLowerCase())
-               })
-            }
-            return this.application.data
-         }
+   name: 'KVStore',
+   mixins: [apiGetValue, apiDeleteComposeORkv],
+   data: () => ({
+      search: '',
+      application: [],
+      inputdata: {
+         id: null,
+         decode: false,
+         all: false
       },
-      created() {
-         const url='http://localhost/v1/getvalue'
-         const options={
-            method:'POST',
-            headers:{
-            'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({
-               id: this.$route.params.id,
-               decode: true,
-               all: true
-            })
-         };
-         axios(url,options)
-         .then(response => (this.application = response.data.response))
-         .catch(error => console.log(error))
+      deletedata: {
+         id: null,
+         all: false
       },
-      methods:{
-         deletekv(e){
-            e.preventDefault();
-            const url='http://localhost/v1/deletevalue'
-            const options={
-               method:'DELETE',
-               headers:{
-                  'Content-Type': 'application/json'
-               },
-               data: JSON.stringify({
-                  id: this.$route.params.id,
-                  all: true
-               })
-            }
-            axios(url,options)
-            .then(response => {
-               if(response.status === 200) {
-                  this.$router.push({ name : 'Compose' });}
-               }
-            )
-            .catch(error => console.log(error))
-         }
+      deletekvdata: {
+         id: null,
+         data: null,
+         all: false
       }
+   }),
+   computed: {
+      filteredList() {
+         if (this.application.length != 0) {
+            return this.application.data.filter(filtereddata => {
+            return filtereddata.key.toLowerCase().includes(this.search.toLowerCase())
+            })
+         }
+         return this.application.data
+      }
+   },
+   created(){
+      this.getvalue()
+   },
+   methods:{
+      getvalue: function() {
+         this.inputdata = {
+            id: this.$route.params.id,
+            decode: true,
+            all: true,
+         }
+         this.apiGetValue(this.inputdata)
+         .then((resp) => {
+            this.application = resp.response
+         })
+         .catch((err) => {
+            console.log(err)
+         })
+      },
+      deletecompose: function(e) {
+         e.preventDefault();
+         this.deletedata = {
+            id: this.$route.params.id,
+            all: true
+         }
+         this.apiDeleteComposeORkv(this.deletedata)
+         .then((resp) => {
+            if(resp.status === 200) {
+               this.$router.push({ name : 'Compose' });
+            }
+         })
+         .catch((err) => {
+            console.log(err)
+         })
+      },
+       deletekv: function(key) {
+         this.deletekvdata = {
+            id: this.$route.params.id,
+            data: [{key: key}]
+         }
+         this.apiDeleteComposeORkv(this.deletekvdata)
+         .then((resp) => {
+            if(resp.status === 200) {
+               window.location.reload()   
+            }
+         })
+         .catch((err) => {
+            console.log(err)
+         })
+      }
+   }
 };
 </script>
 <style>

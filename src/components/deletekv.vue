@@ -1,10 +1,3 @@
-<!--template>
-    <b-alert>Successfully deleted!!</b-alert>
-</templat>-->
-
-
-
-<script>
 
 import axios from 'axios';
 

@@ -13,7 +13,7 @@
           <b-form-input v-model="appname" disabled></b-form-input>
           </b-form-group>
 
-          <div v-for="data in datas" :key="data.value">
+          <div v-for="data in datas" :key="data.data">
             <b-form-group label="Key" label-size="md" label-class="font-weight-bold">
             <b-form-input v-model="data.key" ></b-form-input>
             </b-form-group>
@@ -44,9 +44,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+import apiCreateORUpdatekv from '../mixins/apimixin.js'
 export default {
+
   name: "CreateKV",
+  mixins: [apiCreateORUpdatekv],
   data: () => ({
     datas: [
       {
@@ -55,6 +57,10 @@ export default {
       }
     ],
     output: '',
+    inputdata: {
+      id: null,
+      data: null
+    }
   }),
   created() {
     this.appname = this.$route.params.app
@@ -82,27 +88,20 @@ export default {
     },
     updatekv(e) {
       e.preventDefault();
-
-      const url='http://localhost/v1/updatevalue'
-      const options={
-          method:'PATCH',
-          headers:{
-            'Content-Type': 'application/json'
-          },
-
-          data: JSON.stringify({
-              id: this.$route.params.id,
-              data: this.datas
-          })
-      };
-      axios(url,options)
-      .then(response => {
-        if(response.status === 200) {
-            this.$router.push({ name : 'KVStore' });}
+      this.inputdata ={
+        id: this.$route.params.id,
+        data: this.datas
+      }
+      this.apiCreateORUpdatekv(this.inputdata)
+      .then((resp) => {
+        if(resp.status === 200) {
+          this.$router.push({ name : 'KVStore' });
         }
-      )
-      .catch(error => console.log(error))
-  }
+      })
+      .catch((err) => {
+         console.log(err)
+      })
+    }
   }
 };
 </script>
