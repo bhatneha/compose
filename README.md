@@ -1,4 +1,6 @@
-# sampleapp
+# Compose
+
+![compose](asset/compose.gif)
 
 ## Project setup
 ```
